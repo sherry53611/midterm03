@@ -1,0 +1,113 @@
+---
+title: "ggplot2"
+author: "張芸瑄"
+date: "2017年1月19日"
+output: 
+    html_document:
+    toc: true
+    toc_depth: 2
+---
+
+```{r echo=FALSE,message=FALSE}
+library(ggplot2)
+```
+
+
+```{r echo=FALSE}
+name <- c("a","a","c","d","e","c","g","h","a","d")
+speed <- c(4,4,7,7,8,9,10,10,10,11)
+dist <- c(2,10,4,22,16,10,18,26,34,17)
+x3 <- c("1","1","1","2","2","2","3","3","3","3")
+Species <- factor(x3)
+hw03 <- data.frame(name,speed,dist,Species)
+```
+
+## 資料概覽
+
+**自定義一個data.frame`hw03` **
+
+```{r}
+str(hw03)
+```
+
+## 散佈圖
+
+```{r}
+ggplot(hw03,aes(x=speed,y=dist))+
+  geom_point(colour="blue",size=5,shape=21)+
+  ggtitle("The first graph")+
+  xlab("Speed")+
+  ylab("Dist")+
+  geom_smooth(method = "loess",se=FALSE)
+```
+
+## 線圖
+
+```{r}
+ggplot(hw03,aes(x=speed,y=dist))+
+  geom_point(colour="blue",size=5,shape=21)+
+  ggtitle("The second graph")+
+  xlab("Speed")+
+  ylab("Dist")+
+  geom_line(colour="yellow")
+```
+
+## 直方圖
+
+**依照類別1、2、3區分**
+```{r}
+ggplot(hw03,aes(x=speed))+
+  geom_histogram(binwidth = 0.5)+
+  ggtitle("The third graph")+
+  xlab("Speed")+
+  facet_wrap(~ hw03$Species)
+```
+
+## 盒鬚圖
+
+```{r}
+ggplot(hw03,aes(x=1,y=dist))+
+  geom_boxplot(colour="pink")+
+  ggtitle("The 4th graph")+
+  ylab("Dist")
+```
+
+*納入類別1、2、3變數
+
+```{r echo=FALSE}
+ggplot(hw03,aes(x=hw03$Species,y=dist))+
+  geom_boxplot(colour="purple")+
+  ggtitle("The 4th graph")+
+  ylab("Dist")
+```
+
+## 長條圖
+
+```{r}
+ggplot(hw03,aes(hw03$Species))+
+  geom_bar(width = 0.5)+
+  ggtitle("The 5th graph")+
+  xlab("Species")
+```
+
+```{r echo=FALSE}
+ggplot(hw03,aes(x=hw03$name))+
+  geom_bar(width = 0.5)+
+  ggtitle("The 5th graph")+
+  xlab("Name")+coord_flip()
+```
+
+**加入互動性**
+
+
+```{r echo=FALSE,message=FALSE}
+static_ggplot <- ggplot(hw03,aes(hw03$Species))+
+  geom_bar(position = "dodge",width = 0.5)+
+  ggtitle("The 5th graph")+
+  xlab("Species")
+library(plotly)
+ggplotly(static_ggplot)
+```
+
+  
+
